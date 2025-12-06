@@ -1,0 +1,171 @@
+openapi: '3.0.0'
+info:
+  version: 1.0.0
+  title: CareerEscape API
+  license:
+    name: MIT
+servers:
+  - url: https://api.careerescaoe.com/v1
+paths:
+  /careers:
+    get:
+      summary: List all career assessments
+      operationId: listCareers
+      parameters:
+        - name: limit
+          in: query
+          description: How many items to return at one time (max 100)
+          required: false
+          schema:
+            type: integer
+            format: int32
+      responses:
+        200:
+          description: An paged array of career assessments
+          headers:
+            x-next:
+              description: A link to the next page of responses
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Careers'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      summary: Create a new career assessment
+      operationId: createCareers
+      responses:
+        201:
+          description: Career assessment created successfully
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /careers/{careerId}:
+    get:
+      summary: Info for a specific career assessment
+      operationId: showCareerById
+      parameters:
+        - name: careerId
+          in: path
+          required: true
+          description: The id of the career assessment to retrieve
+          schema:
+            type: string
+      responses:
+        200:
+          description: Career assessment details retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Careers'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      summary: Update an existing career assessment
+      operationId: updateCareer
+      responses:
+        200:
+          description: Career assessment updated successfully
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /roadmaps:
+    get:
+      summary: Retrieve user roadmaps
+      operationId: listRoadmaps
+      parameters:
+        - name: timeframe
+          in: query
+          description: Filter roadmaps by timeframe (6_month, 1_year, 2_year)
+          required: false
+          schema:
+            type: string
+            enum: [6_month, 1_year, 2_year]
+      responses:
+        200:
+          description: List of user roadmaps
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Roadmaps'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      summary: Generate a new career roadmap
+      operationId: createRoadmap
+      responses:
+        201:
+          description: Roadmap generated successfully
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    Career:
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        tag:
+          type: string
+    Careers:
+      type: array
+      items:
+        $ref: '#/components/schemas/Career'
+    Roadmap:
+      required:
+        - id
+        - timeframe
+      properties:
+        id:
+          type: integer
+          format: int64
+        timeframe:
+          type: string
+          enum: [6_month, 1_year, 2_year]
+        milestones:
+          type: array
+          items:
+            type: object
+    Roadmaps:
+      type: array
+      items:
+        $ref: '#/components/schemas/Roadmap'
+    Error:
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string

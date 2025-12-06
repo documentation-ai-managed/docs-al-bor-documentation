@@ -1,0 +1,167 @@
+---
+title: Roadmap Planning
+description: How to create and customize career roadmaps using CareerEscape
+---
+
+## Roadmap Planning Overview
+
+CareerEscape's roadmap planning feature helps you create personalized career development plans. Our AI analyzes your current situation and generates actionable steps across different timeframes.
+
+<Callout kind="tip">Start with a comprehensive assessment to get the most accurate roadmap.</Callout>
+
+## Creating Your First Roadmap
+
+Follow these steps to generate a personalized career plan.
+
+<Steps>
+  <Step title="Complete Assessment" icon="clipboard">
+    Fill out our detailed skills, experience, and goals questionnaire.
+  </Step>
+  <Step title="Set Timeframe" icon="clock">
+    Choose between 6-month, 1-year, or 2-year plans.
+  </Step>
+  <Step title="Review Generated Plan" icon="eye">
+    Examine the AI-generated roadmap and milestones.
+  </Step>
+  <Step title="Customize" icon="edit">
+    Modify steps to fit your specific situation.
+  </Step>
+</Steps>
+
+## Assessment Components
+
+Our assessment covers multiple areas to create comprehensive roadmaps.
+
+<Columns cols={2}>
+  <Card title="Skills Inventory" icon="user" href="#">
+    Current technical and soft skills evaluation.
+  </Card>
+  <Card title="Career Goals" icon="target" href="#">
+    Short and long-term objectives.
+  </Card>
+  <Card title="Financial Situation" icon="dollar-sign" href="#">
+    Salary expectations and budget constraints.
+  </Card>
+  <Card title="Market Analysis" icon="bar-chart" href="#">
+    Industry trends and opportunities.
+  </Card>
+</Columns>
+
+## Roadmap Types
+
+Choose the timeframe that best fits your career goals.
+
+<Tabs>
+  <Tab title="6-Month Sprint" icon="zap">
+    Focus on quick wins and skill-building.
+    
+    <Expandable title="Typical Milestones" default-open="false">
+      - Complete online courses
+      - Build portfolio projects
+      - Network locally
+      - Update resume
+    </Expandable>
+  </Tab>
+  <Tab title="1-Year Plan" icon="calendar">
+    Balanced approach with education and experience.
+    
+    <CodeGroup tabs="JSON,Python">
+      ````json
+      {
+        "timeframe": "1_year",
+        "milestones": [
+          {
+            "month": 3,
+            "action": "Complete certification",
+            "cost": 500
+          },
+          {
+            "month": 6,
+            "action": "Gain internship",
+            "cost": 0
+          }
+        ]
+      }
+      ````
+      ````python
+      import careerescaoe
+      
+      client = careerescaoe.Client(api_key='your_key')
+      roadmap = client.create_roadmap(timeframe='1_year', skills=['python', 'sql'])
+      print(roadmap.milestones)
+      ````
+    </CodeGroup>
+  </Tab>
+  <Tab title="2-Year Strategy" icon="trending-up">
+    Comprehensive career transformation.
+    
+    <Callout kind="info">2-year plans often involve major changes like industry switches or entrepreneurship.</Callout>
+  </Tab>
+</Tabs>
+
+## Customization Options
+
+Modify generated roadmaps to fit your unique situation.
+
+<ExpandableGroup>
+  <Expandable title="Adjust Milestones" default-open="true">
+    Change due dates, add prerequisites, or modify action items.
+  </Expandable>
+  <Expandable title="Financial Constraints" default-open="false">
+    Factor in budget limitations for courses, certifications, or relocation.
+  </Expandable>
+  <Expandable title="Time Availability" default-open="false">
+    Adjust for part-time vs full-time career planning.
+  </Expandable>
+</ExpandableGroup>
+
+## Tracking Progress
+
+Monitor your advancement with built-in progress tracking.
+
+<Request tabs="API,SDK" show-lines="false">
+  ````bash
+  curl -X GET https://api.careerescaoe.com/v1/roadmaps/{id}/progress \
+    -H "Authorization: Bearer YOUR_TOKEN"
+  ````
+  ````javascript
+  const progress = await roadmap.getProgress();
+  console.log(`Completed: ${progress.completed}/${progress.total} milestones`);
+  ````
+</Request>
+
+<Response tabs="Success" show-lines="false">
+  ````json
+  {
+    "completed": 5,
+    "total": 12,
+    "nextMilestone": "Complete Python certification",
+    "estimatedCompletion": "2024-08-15"
+  }
+  ````
+</Response>
+
+## Best Practices
+
+- Review and update your roadmap quarterly
+- Be realistic about time commitments
+- Include both learning and practical experience
+- Network with professionals in your target field
+
+<Callout kind="success">Regular progress reviews increase your chances of success by 40%.</Callout>
+
+## Common Pitfalls
+
+| Pitfall | Solution |
+|---------|----------|
+| Overambitious goals | Break large goals into smaller milestones |
+| Ignoring finances | Include cost-benefit analysis for each step |
+| Lack of accountability | Share roadmap with mentor or accountability partner |
+
+<Expandable title="Advanced Customization" default-open="false">
+  For complex career changes, consider:
+  - Industry certifications
+  - Mentorship programs
+  - Freelance opportunities
+  - Geographic relocation planning
+</Expandable>

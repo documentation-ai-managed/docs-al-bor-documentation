@@ -1,0 +1,160 @@
+---
+title: Integrations
+description: Connect CareerEscape with other tools and platforms
+---
+
+## Integration Overview
+
+CareerEscape integrates with popular job boards, financial tools, and learning platforms to provide comprehensive career planning.
+
+<Callout kind="info">Integrations help automate data collection and provide more accurate roadmaps.</Callout>
+
+## Supported Platforms
+
+We support integrations with leading career and finance tools.
+
+<Columns cols={3}>
+  <Card title="LinkedIn" icon="users" href="#">
+    Import professional network and job history.
+  </Card>
+  <Card title="Indeed" icon="search" href="#">
+    Sync job applications and saved searches.
+  </Card>
+  <Card title="Mint" icon="dollar-sign" href="#">
+    Connect financial data for budget planning.
+  </Card>
+</Columns>
+
+## Setting Up Integrations
+
+Follow these steps to connect external services.
+
+<Steps>
+  <Step title="Choose Integration" icon="plug">
+    Select the platform you want to connect.
+  </Step>
+  <Step title="Authorize Access" icon="key">
+    Grant CareerEscape permission to access your data.
+  </Step>
+  <Step title="Configure Sync" icon="settings">
+    Set sync frequency and data preferences.
+  </Step>
+  <Step title="Test Connection" icon="check-circle">
+    Verify data is flowing correctly.
+  </Step>
+</Steps>
+
+## API Integration
+
+For custom integrations, use our REST API.
+
+<Tabs>
+  <Tab title="Webhooks" icon="webhook">
+    Receive real-time updates from connected platforms.
+    
+    <CodeGroup tabs="JavaScript,Python">
+      ````javascript
+      app.post('/webhook/careerescaoe', (req, res) => {
+        const { event, data } = req.body;
+        if (event === 'job_applied') {
+          updateRoadmap(data);
+        }
+        res.sendStatus(200);
+      });
+      ````
+      ````python
+      from flask import Flask, request
+      
+      app = Flask(__name__)
+      
+      @app.route('/webhook', methods=['POST'])
+      def webhook():
+        event = request.json['event']
+        if event == 'skill_updated':
+          process_skill_update(request.json['data'])
+        return 'OK', 200
+      ````
+    </CodeGroup>
+  </Tab>
+  <Tab title="OAuth" icon="lock">
+    Secure API access for third-party applications.
+    
+    <Expandable title="OAuth Flow" default-open="false">
+      1. Redirect user to CareerEscape authorization URL
+      2. User grants permissions
+      3. Receive authorization code
+      4. Exchange code for access token
+      5. Use token for API calls
+    </Expandable>
+  </Tab>
+</Tabs>
+
+## Data Sync Options
+
+Configure how and when data synchronizes.
+
+<ExpandableGroup>
+  <Expandable title="Real-time Sync" default-open="true">
+    Immediate updates for critical data like job applications.
+  </Expandable>
+  <Expandable title="Scheduled Sync" default-open="false">
+    Daily or weekly updates for less time-sensitive information.
+  </Expandable>
+  <Expandable title="Manual Sync" default-open="false">
+    User-initiated data refreshes for on-demand updates.
+  </Expandable>
+</ExpandableGroup>
+
+## Security and Privacy
+
+All integrations use industry-standard security protocols.
+
+<Callout kind="danger">Only grant necessary permissions to maintain data privacy.</Callout>
+
+<Request tabs="Create Integration" show-lines="true">
+  ````bash
+  curl -X POST https://api.careerescaoe.com/v1/integrations \
+    -H "Authorization: Bearer YOUR_TOKEN" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "platform": "linkedin",
+      "permissions": ["profile", "network"],
+      "sync_frequency": "daily"
+    }'
+  ````
+</Request>
+
+<Response tabs="Success" show-lines="false">
+  ````json
+  {
+    "id": "int_123",
+    "platform": "linkedin",
+    "status": "connected",
+    "last_sync": "2024-01-15T10:30:00Z"
+  }
+  ````
+</Response>
+
+## Troubleshooting Integrations
+
+Common issues and solutions.
+
+| Issue | Solution |
+|-------|----------|
+| Connection failed | Check API credentials and network connectivity |
+| Data not syncing | Verify sync settings and permissions |
+| Rate limit exceeded | Implement exponential backoff for API calls |
+
+<Expandable title="Advanced: Custom Integrations" default-open="false">
+  For enterprise customers, we offer custom integration development. Contact our partnerships team for more information.
+</Expandable>
+
+## Best Practices
+
+- Start with one integration at a time
+- Test thoroughly in development environment
+- Monitor API usage to avoid rate limits
+- Keep integration credentials secure
+- Regularly review and revoke unnecessary permissions
+
+<Callout kind="success">Well-configured integrations can improve roadmap accuracy by up to 60%.</Callout>

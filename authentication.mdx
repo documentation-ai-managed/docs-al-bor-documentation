@@ -1,0 +1,141 @@
+---
+title: Authentication
+description: How to authenticate with the CareerEscape API and manage access
+---
+
+## Authentication Overview
+
+CareerEscape uses OAuth 2.0 for secure API access. All requests must include a valid access token obtained through our authentication flow.
+
+<Callout kind="info">Authentication is required for all API endpoints except the health check.</Callout>
+
+## Getting Started with Auth
+
+To begin using the API, you need to register your application and obtain client credentials.
+
+<Steps>
+  <Step title="Register Application" icon="user-plus">
+    Create an account and register your application in the developer portal.
+  </Step>
+  <Step title="Obtain Credentials" icon="key">
+    Receive your client ID and client secret.
+  </Step>
+  <Step title="Request Token" icon="send">
+    Use OAuth 2.0 flow to get an access token.
+  </Step>
+</Steps>
+
+## OAuth 2.0 Flow
+
+We support the Authorization Code grant type for web applications and the Client Credentials grant for server-to-server communication.
+
+<Tabs>
+  <Tab title="Web App" icon="globe">
+    For web applications, use the Authorization Code flow.
+    
+    <CodeGroup tabs="JavaScript,Python">
+      ````javascript
+      // Redirect user to authorization URL
+      const authUrl = `https://api.careerescaoe.com/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code`;
+      window.location.href = authUrl;
+      ````
+      ````python
+      import requests
+      
+      # Exchange code for token
+      response = requests.post('https://api.careerescaoe.com/oauth/token', {
+          'grant_type': 'authorization_code',
+          'client_id': client_id,
+          'client_secret': client_secret,
+          'code': authorization_code,
+          'redirect_uri': redirect_uri
+      })
+      ````
+    </CodeGroup>
+  </Tab>
+  <Tab title="Server" icon="server">
+    For server applications, use Client Credentials.
+    
+    <CodeGroup tabs="cURL,Python">
+      ````bash
+      curl -X POST https://api.careerescaoe.com/oauth/token \
+        -H "Content-Type: application/x-www-form-urlencoded" \
+        -d "grant_type=client_credentials&client_id=YOUR_CLIENT_ID&client_secret=YOUR_CLIENT_SECRET"
+      ````
+      ````python
+      import requests
+      
+      response = requests.post('https://api.careerescaoe.com/oauth/token', {
+          'grant_type': 'client_credentials',
+          'client_id': client_id,
+          'client_secret': client_secret
+      })
+      token = response.json()['access_token']
+      ````
+    </CodeGroup>
+  </Tab>
+</Tabs>
+
+## Using Access Tokens
+
+Include the access token in the Authorization header for all API requests.
+
+<Request tabs="cURL,JavaScript" show-lines="true">
+  ````bash
+  curl -X GET https://api.careerescaoe.com/v1/careers \
+    -H "Authorization: Bearer YOUR_ACCESS_TOKEN"
+  ````
+  ````javascript
+  const response = await fetch('https://api.careerescaoe.com/v1/careers', {
+    headers: {
+      'Authorization': `Bearer ${accessToken}`
+    }
+  });
+  ````
+</Request>
+
+## Token Management
+
+Access tokens expire after 1 hour. Use refresh tokens to obtain new access tokens without re-authentication.
+
+<Expandable title="Refresh Token Flow" default-open="false">
+  To refresh an access token:
+  
+  ````python
+  response = requests.post('https://api.careerescaoe.com/oauth/token', {
+      'grant_type': 'refresh_token',
+      'refresh_token': refresh_token,
+      'client_id': client_id,
+      'client_secret': client_secret
+  })
+  new_token = response.json()['access_token']
+  ````
+</Expandable>
+
+## Security Best Practices
+
+- Store tokens securely, never in client-side localStorage for production apps
+- Use HTTPS for all requests
+- Rotate client secrets regularly
+- Implement proper error handling for expired tokens
+
+<Callout kind="danger">Never expose client secrets in client-side code or public repositories.</Callout>
+
+## Troubleshooting
+
+Common authentication issues and solutions:
+
+| Issue | Solution |
+|-------|----------|
+| Invalid token | Check token expiration and refresh if needed |
+| Insufficient scope | Request additional scopes during authorization |
+| Rate limit exceeded | Implement exponential backoff for retries |
+
+<ExpandableGroup>
+  <Expandable title="FAQ: Token Expiration" default-open="false">
+    Access tokens expire after 1 hour. Refresh tokens are valid for 30 days.
+  </Expandable>
+  <Expandable title="FAQ: Scopes" default-open="false">
+    Scopes define what actions your application can perform. Request only necessary scopes.
+  </Expandable>
+</ExpandableGroup>
